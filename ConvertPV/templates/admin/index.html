@@ -1,0 +1,556 @@
+{% extends "admin/base_site.html" %}
+{% load i18n static %}
+{% load admin_menu %}
+
+{% block extrastyle %}
+{{ block.super }}
+<!-- <link rel="stylesheet" type="text/css" href="{% static 'admin/css/dashboard.css' %}" /> -->
+{% endblock %}
+
+{% block coltype %}colMS{% endblock %}
+
+{% block bodyclass %}{{ block.super }} dashboard{% endblock %}
+{% if not is_popup %}
+{% block breadcrumbs %}
+<!--<div class="row mb-2">-->
+<!--    <div class="col-sm-4">-->
+<!--        <h2>{{title}}</h2>-->
+<!--    </div>-->
+<!--    <div class="col-sm-8">-->
+<!--        <ol class="breadcrumb float-sm-right">-->
+<!--            <li class="breadcrumb-item"><a href="{% url 'admin:index' %}"><i class="fas fa-tachometer-alt"></i> {% trans 'Home' %}</a></li>-->
+<!--            {% for app in app_list %}-->
+<!--            <li class="breadcrumb-item active">{{ app.name }}</li>-->
+<!--            {% endfor %}-->
+<!--        </ol>-->
+<!--    </div>-->
+<!--</div>-->
+{% endblock %}
+{% endif %}
+
+
+{% block content %}
+<!--<div id="content-main" class="container-fluid">-->
+<!--    <div class="row">-->
+<!--        {% if app_list %}-->
+<!--        {% for app in app_list %}-->
+
+<!--        <div class="card card-widget col-md-12">-->
+<!--            <div class="card-header ">-->
+<!--                <h3 class="card-title"><a href="{{ app.app_url }}" class="nav-link"-->
+<!--                        title="{% blocktrans with name=app.name %}Models in the {{ name }} application{% endblocktrans %}">{{ app.name }}</a>-->
+<!--                </h3>-->
+
+<!--                <div class="card-tools pull-right">-->
+<!--                    <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fa fa-minus"></i>-->
+<!--                    </button>-->
+<!--                </div>-->
+<!--                &lt;!&ndash; /.box-tools &ndash;&gt;-->
+<!--            </div>-->
+<!--            &lt;!&ndash; /.box-header &ndash;&gt;-->
+<!--            <div class="card-body">-->
+<!--                <div class="row">-->
+<!--                    {% for model in app.models %}-->
+
+<!--                    <div class="col-md-4 col-sm-6 model-box">-->
+
+<!--                        <div class="info-box bg-secondary">-->
+<!--                                -->
+<!--                            <span class="info-box-icon">-->
+<!--                                <a href="{{ model.admin_url }}">{% autoescape off %}{% icon %}{% endautoescape %}</a>-->
+<!--                            </span>-->
+<!--                        -->
+<!--                            <div class="info-box-content">-->
+<!--                                <a href="{{ model.admin_url }}">-->
+<!--                                    <span class="info-box-text text-light">{{ model.name }}</span>-->
+<!--                                </a>-->
+<!--                                {% if model.add_url %}-->
+<!--                                <a href="{{ model.add_url }}" class="btn btn-default btn-xs btn-block"><i-->
+<!--                                        class="fa fa-plus"></i> {%trans 'Add' %}</a>-->
+<!--                                {% endif %}-->
+<!--                                {% if model.admin_url %}-->
+<!--                                <a href="{{ model.admin_url }}" class="btn btn-warning btn-xs btn-block"><i-->
+<!--                                        class="fa fa-pencil"></i>-->
+<!--                                    {%trans 'Change' %}</a>-->
+<!--                                {% endif %}-->
+<!--                            </div>-->
+
+<!--                            &lt;!&ndash; /.info-box-content &ndash;&gt;-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    {% endfor %}-->
+<!--                </div>-->
+
+
+
+<!--                {% comment %}<div class="app-{{ app.app_label }} module">-->
+<!--                    <table class="table table-hover table-striped">-->
+<!--                        <caption>-->
+<!--                            <a href="{{ app.app_url }}" class="section"-->
+<!--                                title="{% blocktrans with name=app.name %}Models in the {{ name }} application{% endblocktrans %}">{{ app.name }}</a>-->
+<!--                        </caption>-->
+<!--                        {% for model in app.models %}-->
+<!--                        <tr class="model-{{ model.object_name|lower }}">-->
+<!--                            {% if model.admin_url %}-->
+<!--                            <th scope="row"><a href="{{ model.admin_url }}">{{ model.name }}</a></th>-->
+<!--                            {% else %}-->
+<!--                            <th scope="row">{{ model.name }}</th>-->
+<!--                            {% endif %}-->
+
+<!--                            {% if model.add_url %}-->
+<!--                            <td><a href="{{ model.add_url }}" class="btn btn-success btn-xs"><i class="fa fa-plus"></i>-->
+<!--                                    {% trans 'Add' %}</a></td>-->
+<!--                            {% else %}-->
+<!--                            <td>&nbsp;</td>-->
+<!--                            {% endif %}-->
+
+<!--                            {% if model.admin_url %}-->
+<!--                            <td><a href="{{ model.admin_url }}" class="btn btn-warning btn-xs"><i-->
+<!--                                        class="fa fa-pencil"></i>-->
+<!--                                    {% trans 'Change' %}</a></td>-->
+<!--                            {% else %}-->
+<!--                            <td>&nbsp;</td>-->
+<!--                            {% endif %}-->
+<!--                        </tr>-->
+<!--                        {% endfor %}-->
+<!--                    </table>-->
+<!--                </div>{% endcomment %}-->
+<!--            </div>-->
+<!--        </div>-->
+<!--                {% endfor %}-->
+<!--            -->
+<!--                {% else %}-->
+<!--                <p>{% trans "You don't have permission to edit anything." %}</p>-->
+<!--                {% endif %}-->
+<!--                &lt;!&ndash; /.box-body &ndash;&gt;-->
+<!--           -->
+
+
+<!--        {% block sidebar %}-->
+
+<!--        <div class="card card-widget col-md-12">-->
+<!--            <div class="card-header ">-->
+<!--                <h2 class="card-title">{% trans 'Recent actions' %} / </h2>-->
+<!--                <h3 class="card-title"> {% trans 'My actions' %}</h3>-->
+<!--                <h3 class="card-title"><a href="{{ app.app_url }}" class="nav-link"-->
+<!--                        title="{% blocktrans with name=app.name %}Models in the {{ name }} application{% endblocktrans %}">{{ app.name }}</a>-->
+<!--                </h3>-->
+
+<!--                <div class="card-tools pull-right">-->
+<!--                    <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fa fa-minus"></i>-->
+<!--                    </button>-->
+<!--                </div>-->
+<!--                &lt;!&ndash; /.box-tools &ndash;&gt;-->
+<!--            </div>-->
+<!--            <div class="card-body">-->
+<!--                <div class="row">-->
+<!--                    <div class="col-md-12">-->
+<!--                        {% load log %}-->
+<!--                        {% get_admin_log 10 as admin_log for_user user %}-->
+<!--                        {% if not admin_log %}-->
+<!--                        <p>{% trans 'None available' %}</p>-->
+<!--                        {% else %}-->
+<!--                        <div class="timeline">-->
+<!--                            {% for entry in admin_log %}-->
+<!--                            <div>-->
+<!--                                <i-->
+<!--                                    class="fas fa-{% if entry.is_addition %}plus bg-blue{% endif %}{% if entry.is_change %}edit bg-green{% endif %}{% if entry.is_deletion %}minus bg-red{% endif %} "></i>-->
+<!--                                <div class="timeline-item">-->
+<!--                                    <span class="time"><i class="fas fa-clock"></i> {{entry.action_time}}</span>-->
+
+<!--                                    <div class="timeline-body">-->
+<!--                                        <a href="#">{{entry.user}}</a>-->
+<!--                                        {% if entry.is_addition %}added{% endif %}{% if entry.is_change %}edited-->
+<!--                                        {% endif %}{% if entry.is_deletion %}deleted{% endif %}-->
+<!--                                        {% if entry.is_deletion or not entry.get_admin_url %}-->
+<!--                                        {{ entry.object_repr }}-->
+<!--                                        {% else %}-->
+<!--                                        <a href="{{ entry.get_admin_url }}">{{ entry.object_repr }}</a>-->
+<!--                                        {% endif %}-->
+<!--                                        <br />-->
+<!--                                        {% if entry.content_type %}-->
+<!--                                        <span class="mini quiet">{% filter capfirst %}-->
+<!--                                            {{ entry.content_type }}{% endfilter %}</span>-->
+<!--                                        {% else %}-->
+<!--                                        <span class="mini quiet">{% trans 'Unknown content' %}</span>-->
+<!--                                        {% endif %}-->
+
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                            {% endfor %}-->
+<!--                        </div>-->
+<!--                        {% endif %}-->
+<!--                    </div>-->
+<!--                </div>-->
+
+<!--            </div>-->
+
+<!--        </div>-->
+
+<!--        {% endblock %}-->
+
+<!--    </div>-->
+<div style="display: inline-flex;padding-left: 37%;">
+    <label >Select Profile:</label>
+    <div class="selectdrop">
+        <select name="profile" id="profile" style="width:100px;margin-right:8%">
+
+<!--            <option value="{{allprofile.profile_name}}">{{ profile_data.profile_name }}</option>-->
+               <option value="Pharma">Pharma</option>
+
+        </select>
+<!--        <button type="button" class="btn " style=" background-color: rgb(185 182 213);"><a href="#">SUBMIT</a></button>-->
+    </div>
+</div>
+    <div class="container-fluid">
+  <div class="row">
+    <div class="col-5" style="width:45%;padding: 0px;">
+        <div>
+            <form method="post" id="a-form" action= "{% url 'fileconverter' %}" >
+                {% csrf_token %}
+                <div class="card">
+                    <div  style="padding-bottom: 0px;">
+                        <h5 class="card-title" style="text-align: center; margin-left: 35%;">R2 XML FILES</h5>
+                            <br>
+                        <div class="box" style="overflow: scroll; height: 70vh;overflow-x: auto;">
+                            <div class="box1" style="height: 100%;">
+
+                                <table   style="width: 100%;">
+                                    <thead>
+                                        <tr class="text-white" style="background-color: rgba(140, 159, 184); position: sticky; top: 0">
+                                            <th scope="col">#</th>
+                                            <th scope="col"><label><input type="checkbox" id="xml-all-checkbox" style="all:revert;"  />All</label></th>
+                                            <th scope="col">File Name</th>
+                                            <th scope="col">Size</th>
+                                            <th scope="col">Date Time</th>
+
+                                            <th scope="col">View</th>
+
+                                        </tr>
+                                    </thead>
+
+                                    <tbody >
+                                        <tr>
+                                            <td>1</td>
+                                            <td><input type="checkbox"></td>
+                                            <td>test1.xml</td>
+                                            <td>2kb</td>
+                                            <td>16-05-2023</td>
+                                            <td><button type="button" class="btn btn-primary xml-check" style="background: rgba(140, 159, 184);    padding: 10%;     margin-top: 30%;">
+
+                                                <a href="{{i.0}}/r2" target="_blank" style="text-decoration:none; color:white">view</a></button></td>
+
+                                        </tr>
+                                          <tr>
+                                            <td>1</td>
+                                            <td><input type="checkbox"></td>
+                                            <td>test2.xml</td>
+                                            <td>2kb</td>
+                                            <td>16-05-2023</td>
+                                            <td><button type="button" class="btn btn-primary xml-check" style="background: rgba(140, 159, 184);    padding: 10%;     margin-top: 30%;">
+
+                                                <a href="{{i.0}}/r2" target="_blank" style="text-decoration:none; color:white">view</a></button></td>
+
+                                        </tr>
+                                          <tr>
+                                            <td>1</td>
+                                            <td><input type="checkbox"></td>
+                                            <td>test3.xml</td>
+                                            <td>2kb</td>
+                                            <td>16-05-2023</td>
+                                            <td><button type="button" class="btn btn-primary xml-check" style="background: rgba(140, 159, 184);    padding: 10%;     margin-top: 30%;">
+
+                                                <a href="{{i.0}}/r2" target="_blank" style="text-decoration:none; color:white">view</a></button></td>
+
+                                        </tr>
+                                          <tr>
+                                            <td>1</td>
+                                            <td><input type="checkbox"></td>
+                                            <td>test4.xml</td>
+                                            <td>2kb</td>
+                                            <td>16-05-2023</td>
+                                            <td><button type="button" class="btn btn-primary xml-check" style="background: rgba(140, 159, 184);    padding: 10%;     margin-top: 30%;">
+
+                                                <a href="{{i.0}}/r2" target="_blank" style="text-decoration:none; color:white">view</a></button></td>
+
+                                        </tr>
+                                          <tr>
+                                            <td>1</td>
+                                            <td><input type="checkbox"></td>
+                                            <td>test5.xml</td>
+                                            <td>2kb</td>
+                                            <td>16-05-2023</td>
+                                            <td><button type="button" class="btn btn-primary xml-check" style="background: rgba(140, 159, 184);    padding: 10%;     margin-top: 30%;">
+
+                                                <a href="{{i.0}}/r2" target="_blank" style="text-decoration:none; color:white">view</a></button></td>
+
+                                        </tr>
+                                        {% for i in file_details %}
+                                        <tr>
+
+                                            <th scope="row">{{ forloop.counter }}</th>
+                                            <td ><input type="checkbox" id="xml_check{{forloop.counter}}"  value={{i.0}}  class="left_select"  name="file{{ forloop.counter }}" style="all:revert;" ></td>
+
+                                            {% for j in i %}
+
+                                                <td style="word-wrap:break-word;"> {{ j }} </td>
+
+                                            {% endfor %}
+<!--                                            <td><button type="button" class="xml-check" id="xmlView{{forloop.counter}}" style="background: #3f3fc6;">-->
+                                            <td><button type="button" class="btn btn-primary xml-check" id="xmlView{{forloop.counter}}" style="background: #3f3fc6;    padding: 10%;     margin-top: 30%;">
+
+                                                <a href="{{i.0}}/r2" target="_blank" style="text-decoration:none; color:white">view</a></button></td>
+                                        </tr>
+                                        {% endfor %}
+
+                                        <input type="hidden" name="number" value="{{ length }}">
+
+
+
+                                    </tbody>
+
+                                </table>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="card-footer" style="height: 9vh; padding: 0px;border-top: 1px solid rgb(194, 181, 181);">
+                        <div class="p-2" style="position: absolute;left:5%;">
+                        <small class="text-muted">Total Files : <b>{{length}}</b></small>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            </div>
+    </div>
+    <div class="col-1" style="width:10% ; margin: 0px;padding:0px;">
+       <div class="centered-element"  style="position: absolute; width: 10%;
+
+       top: 40%;">
+                  <center>  <button type="submit" form='a-form' class="btn w-auto m-3 " style="background-color:#861717;color:white"><b>Convert</b></button></center>
+
+                </div>
+    </div>
+    <div class="col-6" style="width:45%;padding: 0px;">
+                  <div >
+                <div class="card">
+                    <div  style="padding-bottom: 0px;">
+                        <h5 class="card-title" style="text-align: center;margin-left:45%">R3 XML Files</h5>
+                            <br>
+
+                        <div class="box" style="overflow: scroll; height: 70vh;overflow-x: auto;">
+                            <div class="box1">
+
+                                <table style="width: 100%;">
+                                    <thead>
+                                        <tr class="text-white" style="background-color: rgba(140, 159, 184); position: sticky; top: 0 ">
+                                            <th scope="col">#</th>
+                                            <th scope="col"><label><input type="checkbox" id="json-all-checkbox" style="all:revert;"  />All</label></th>
+                                            <th scope="col" >File Name</th>
+                                            <th scope="col">Size</th>
+                                            <th scope="col">Date Time</th>
+
+                                            <th scope="col">View</th>
+                                            <th scope="col">Downloads</th>
+
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+ <tr>
+                                            <td>1</td>
+                                            <td><input type="checkbox"></td>
+                                            <td>test10_converted.xml</td>
+                                            <td>2kb</td>
+                                            <td>16-05-2023</td>
+                                            <td><button type="button" class="btn btn-primary xml-check" style="background: rgba(140, 159, 184);         margin-top: 30%;">
+
+                                                <a href="{{i.0}}/r2" target="_blank" style="text-decoration:none; color:white">view</a></button></td>
+ <td><button type="button" class="btn btn-primary xml-check" style="background: rgba(140, 159, 184);         margin-top: 30%;">
+
+                                                <a href="{{i.0}}/r2" target="_blank" style="text-decoration:none; color:white">Download</a></button></td>
+                                        </tr>
+ <td>1</td>
+                                            <td><input type="checkbox"></td>
+                                            <td>test11_converted.xml</td>
+                                            <td>2kb</td>
+                                            <td>16-05-2023</td>
+                                            <td><button type="button" class="btn btn-primary xml-check" style="background: rgba(140, 159, 184);       margin-top: 30%;">
+
+                                                <a href="{{i.0}}/r2" target="_blank" style="text-decoration:none; color:white">view</a></button></td>
+ <td><button type="button" class="btn btn-primary xml-check" style="background: rgba(140, 159, 184);        margin-top: 30%;">
+
+                                                <a href="{{i.0}}/r2" target="_blank" style="text-decoration:none; color:white">Download</a></button></td>
+                                        </tr>
+
+                                        {% for i in new_file_details %}
+                                        <tr>
+                                            <th scope="row">{{ forloop.counter }}</th>
+                                            <td ><input type="checkbox" class="right_select" id="rt-check{{forloop.counter}}" value={{i.0}} name="json_file{{forloop.counter}}" style="all:revert;"></td>
+
+
+                                            {% for j in i %}
+
+                                                    <td style="word-wrap:break-word; max-width: 200px;"> {{ j }} </td>
+                                            {% endfor %}
+                                                <td><button type="button" class=" btn btn-primary json-check" id="jsonView{{forloop.counter}}" style="background: #3f3fc6;    padding: 10%;">
+                                                <a href="{{i.0}}/r3" target="_blank" style="text-decoration:none; color:white">view</a></button></td>
+
+                                                <td>
+                                                        <button type="button"  class="btn btn-primary downbtn" id="downloadButton{{forloop.counter}}" style="background: #3f3fc6;    padding: 5%;">
+                                                <a href="{{i.0}}" target="_blank" style="text-decoration:none; color:white">Download</a></button>
+                                                </td>
+
+                                            </tr>
+                                        {% endfor %}
+
+                                    </tbody>
+
+                                </table>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer" style="display:flex; height: 9vh;border-top: 1px solid rgb(194, 181, 181);padding: 0px; justify-content: space-between;">
+                        <div class="p-2" style="display: inline-block;width: 100%;">
+                        <small class="text-muted" id="no_of_file" style="position: absolute;left:5%;">Total Files : <b>{{ no_of_json_files }}</b></small>
+                         <div style="display: inline-;position: absolute;right: 6%;"><button type="reset" class="btn w-auto m-1 " style="background: #8f92a4;color:white" disabled><b>Validate</b></button>
+
+                         <button type="submit" onclick="downloadall()" class="btn btn-secondary m-1 " data-bs-dismiss="modal"  >Download Selected(s)</button>
+                        </div>
+                        </div>
+                        </div>
+                    </div>
+
+
+
+                </div>
+
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+
+<script type="text/javascript">
+    function downloadall() {
+        var numChecked = $('.right_select:checked')[0].value;
+        var file_names;
+        for (var i = 0; i < $('.right_select:checked').length; i++) {
+            if (file_names == null) {
+                file_names = $('.right_select:checked')[i].value;
+            }
+            else {
+                file_names += "," + $('.right_select:checked')[i].value
+            }
+        }
+        $.ajax({
+            url: "/go/likepost",
+            xhrFields: {
+                responseType: 'blob'
+            },
+            type: 'get',
+            data: {
+                post_id: file_names
+            },
+            success: function (data) {
+                var a = document.createElement('a');
+                var url = window.URL.createObjectURL(data);
+                a.href = url;
+                a.download = 'myfile.zip';
+                document.body.append(a);
+                a.click();
+                a.remove();
+                window.URL.revokeObjectURL(url);
+            },
+            failure: function (data) {
+                alert('Encountered an error');
+            }
+        });
+
+    }
+
+</script>
+
+<script>
+
+    {
+        $('.right_select').click(function () {
+
+            var numChecked = $('.right_select:checked').length;
+            if (numChecked == 1) {
+                var id = $('.right_select:checked')[0].id;
+                var temp = "downloadButton".concat(id.slice(8));
+                var vtemp = "jsonView".concat(id.slice(8));
+
+
+                $(".downbtn ").prop('disabled', true);
+                $(".json-check").prop('disabled', true);
+                $(document.getElementById(temp)).attr('disabled', false);
+                $(document.getElementById(vtemp)).attr('disabled', false);
+
+            }
+            else if (numChecked > 1) {
+                $(".downbtn").prop('disabled', true);
+                $(".json-check").prop('disabled', true);
+            }
+            else {
+                $(".downbtn").prop('disabled', false);
+                $(".json-check").prop('disabled', false);
+            }
+        });
+
+
+        $('.left_select').click(function () {
+
+            var numChecked = $('.left_select:checked').length;
+            if (numChecked == 1) {
+                var id = $('.left_select:checked')[0].id;
+                var temp = "xmlView".concat(id.slice(9));
+
+                $(".xml-check").prop('disabled', true);
+                $(document.getElementById(temp)).attr('disabled', false);
+
+
+            }
+            else if (numChecked > 1) {
+                $(".xml-check").prop('disabled', true);
+            }
+            else {
+                $(".xml-check").prop('disabled', false);
+            }
+        });
+
+
+        $('#xml-all-checkbox').click(function () {
+            if ($(this).is(':checked')) {
+                $(".left_select").prop('checked', true)
+                $(".xml-check").prop('disabled', true);
+            }
+            else {
+                $(".left_select").prop('checked', false)
+                $(".xml-check").prop('disabled', false);
+            }
+        });
+
+        $('#json-all-checkbox').click(function () {
+            if ($(this).is(':checked')) {
+                $(".right_select").prop('checked', true)
+                $(".downbtn").prop('disabled', true);
+                $(".json-check").prop('disabled', true);
+            }
+            else {
+                $(".right_select").prop('checked', false)
+                $(".downbtn").prop('disabled', false);
+                $(".json-check").prop('disabled', false);
+            }
+        });
+
+
+    }
+
+</script>
+    {% endblock %}
